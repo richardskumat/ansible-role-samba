@@ -9,4 +9,4 @@
       when: ansible_os_family == 'Debian'
 
   roles:
-    - role: geerlingguy.samba
+    - role: richardskumat.ansible_role_samba
