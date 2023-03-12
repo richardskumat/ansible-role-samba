@@ -1,9 +1,9 @@
 ---
 - name: Include OS-specific variables.
-  include_vars: "{{ ansible_os_family }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Ensure Samba-related packages are installed (RedHat).
-  package:
+  ansible.builtin.package:
     name:
       - samba
       - samba-client
@@ -13,12 +13,16 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Ensure Samba-related packages are installed (Debian).
-  apt:
+  ansible.builtin.apt:
     name:
       - samba
       - samba-common
     state: present
   when: ansible_os_family == 'Debian'
+  notify: "Restart smb"
 
 - name: Ensure Samba is running and set to start on boot.
-  service: "name={{ samba_daemon }} state=started enabled=yes"
+  ansible.builtin.service:
+    name: "{{ samba_daemon }}"
+    state: started
+    enabled: yes
